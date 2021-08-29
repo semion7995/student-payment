@@ -12,18 +12,18 @@ CREATE TABLE jc_street(
 	street_name varchar(300),
 	PRIMARY KEY (street_code)
 );
-
+CREATE TABLE jc_university (
+    university_id integer not null,
+    university_name varchar(300),
+    PRIMARY KEY (university_id)
+);
 CREATE TABLE jc_country_struct(
 	area_id char(12) not null,
 	area_name varchar(200),
 	PRIMARY KEY (area_id)
 );
 
-CREATE TABLE jc_university (
-    university_id integer not null,
-    university_name varchar(300),
-    PRIMARY KEY (university_id)
-);
+
 CREATE TABLE jc_passport_office(
 	p_office_id integer not null,
 	p_office_area_id char(12) not null,

@@ -7,7 +7,6 @@ import javax.persistence.*;
 public class Street {
     @Id
     @Column(name = "street_code")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long streetCode;
 
     @Column(name = "street_name")
