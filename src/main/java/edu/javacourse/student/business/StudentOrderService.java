@@ -1,7 +1,6 @@
 package edu.javacourse.student.business;
 
-import edu.javacourse.student.dao.StreetRepository;
-import edu.javacourse.student.dao.StudentOrderRepository;
+import edu.javacourse.student.dao.*;
 import edu.javacourse.student.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,12 +23,27 @@ public class StudentOrderService {
 
     @Autowired
     private StreetRepository daoStreet;
+    @Autowired
+    private PassportOfficeRepository daoPassportOffice;
+    @Autowired
+    private UniversityRepository daoUniversity;
+
+    @Autowired
+    private RegisterOfficeRepository daoRegisterOffice;
+    @Autowired
+    private StudentOrderStatusRepository daoStatus;
 
     @Transactional
     public void testSave() {
         StudentOrder so = new StudentOrder();
         so.setHusband(buildPerson(false));
         so.setWife(buildPerson(true));
+
+        so.setStatus(daoStatus.getById(1l));
+        so.setStudentOrderDateTime(LocalDateTime.now());
+        so.setCertificateNumber("CERTIFICATE");
+        so.setRegisterOffice(daoRegisterOffice.getById(1l));
+        so.setMarriageDate(LocalDate.now());
         dao.save(so);
 
     }
@@ -56,6 +71,9 @@ public class StudentOrderService {
             p.setPassportSerial("WIFE_S");
             p.setPassportNumber("WIFE_N");
             p.setIssueDate(LocalDate.now());
+            p.setPassportOffice(daoPassportOffice.getById(1l));
+            p.setUniversity(daoUniversity.getById(1l));
+            p.setStudentNumber("12345");
         }
         else{
             p.setSurName("Рюрик");
@@ -64,6 +82,9 @@ public class StudentOrderService {
             p.setPassportSerial("HUSBAND_S");
             p.setPassportNumber("HUSBAND_N");
             p.setIssueDate(LocalDate.now());
+            p.setPassportOffice(daoPassportOffice.getById(1l));
+            p.setUniversity(daoUniversity.getById(1l));
+            p.setStudentNumber("67890");
         }
 
         return p;
