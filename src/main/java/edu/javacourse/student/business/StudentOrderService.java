@@ -20,6 +20,8 @@ public class StudentOrderService {
 
     @Autowired
     private StudentOrderRepository dao;
+    @Autowired
+    private StudentOrderChildRepository daoChild;
 
     @Autowired
     private StreetRepository daoStreet;
@@ -45,12 +47,15 @@ public class StudentOrderService {
         so.setRegisterOffice(daoRegisterOffice.getById(1l));
         so.setMarriageDate(LocalDate.now());
         dao.save(so);
+        StudentOrderChild soc = buildChild(so);
+        daoChild.save(soc);
 
     }
     @Transactional
     public void testGet() {
         List<StudentOrder> sos = dao.findAll();
         LOG.info(sos.get(0).getWife().getGivenName());
+        LOG.info(sos.get(0).getChildren().get(0).getGivenName());
     }
 
     private Adult buildPerson(boolean wife){
@@ -86,6 +91,41 @@ public class StudentOrderService {
             p.setUniversity(daoUniversity.getById(1l));
             p.setStudentNumber("67890");
         }
+
+        return p;
+
+    }
+private StudentOrderChild buildChild(StudentOrder studentOrder){
+        StudentOrderChild p = new StudentOrderChild();
+        p.setStudentOrder(studentOrder);
+
+        p.setDateOfBirth(LocalDate.now());
+        Address a = new Address();
+        a.setPostCode("190000");
+        a.setBuilding("21");
+        a.setExtension("B");
+        a.setApartment("199");
+        Street byId = daoStreet.getById(1l);
+        a.setStreet(byId);
+        p.setAddress(a);
+    /**
+     *     private StudentOrder studentOrder;
+
+           private String certificateNumber;
+
+           private LocalDate certificateDate;
+
+     *     private RegisterOffice registerOffice;
+     */
+
+            p.setSurName("Рюрик");
+            p.setGivenName("Дмитрий");
+            p.setPatronymic("Иванович");
+            p.setCertificateDate(LocalDate.now());
+            p.setCertificateNumber("BIRTH N");
+            p.setRegisterOffice(daoRegisterOffice.getById(1l));
+
+
 
         return p;
 
